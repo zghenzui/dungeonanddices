@@ -1,11 +1,11 @@
 # Dice Dungeon
 
-Minimal Godot 4.x prototype. Open this folder in Godot and run the project.
+Offline Godot 4.x prototype: roll, move, fight a Goblin, and claim its Chest.
 
-Run instructions:
+Open `project.godot` in Godot 4.x and run the main scene.
 
-1. Open Godot 4.x
-2. Open the project at the repository root
-3. Run the project from the editor
+Run deterministic offline tests from the repository root:
 
-Acceptance criteria: The main scene shows "Dice Dungeon" and "Prototype Setup Complete".
+```text
+godot --headless --path . --script tests/test_runner.gd
+```

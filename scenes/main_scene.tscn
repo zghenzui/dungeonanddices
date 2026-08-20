@@ -1,7 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/presentation/main.gd" id="1_main"]
-[ext_resource type="Script" path="res://scripts/presentation/board_view.gd" id="2_board_view"]
+[ext_resource type="Script" path="res://scripts/presentation/board_view.gd" id="2_board"]
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.055, 0.075, 0.102, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.34, 0.42, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -12,38 +28,163 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="BoardView" type="Control" parent="."]
+[node name="Backdrop" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 112.0
-offset_right = -48.0
-offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("2_board_view")
+color = Color(0.025, 0.035, 0.05, 1)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Header" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = -32.0
+offset_bottom = 98.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Row" type="HBoxContainer" parent="Header"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Header/Row"]
+layout_mode = 2
+text = "DICE DUNGEON"
+theme_override_colors/font_color = Color(0.96, 0.82, 0.38, 1)
+theme_override_font_sizes/font_size = 24
+
+[node name="Spacer" type="Control" parent="Header/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WarriorHP" type="Label" parent="Header/Row"]
+layout_mode = 2
+text = "WARRIOR  HP 5 / 5"
+theme_override_colors/font_color = Color(0.38, 0.72, 0.96, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="GoblinHP" type="Label" parent="Header/Row"]
+layout_mode = 2
+text = "GOBLIN  HP 10 / 10"
+theme_override_colors/font_color = Color(0.95, 0.42, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BoardPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 114.0
+offset_right = -32.0
+offset_bottom = -166.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("panel")
 
-[node name="Content" type="VBoxContainer" parent="CenterContainer"]
+[node name="BoardView" type="Control" parent="BoardPanel"]
+custom_minimum_size = Vector2(900, 420)
 layout_mode = 2
-theme_override_constants/separation = 16
+mouse_filter = 0
+script = ExtResource("2_board")
 
-[node name="Title" type="Label" parent="CenterContainer/Content"]
+[node name="Footer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -150.0
+offset_right = -32.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Row" type="HBoxContainer" parent="Footer"]
 layout_mode = 2
-text = "Dice Dungeon"
+theme_override_constants/separation = 18
+
+[node name="StateBlock" type="VBoxContainer" parent="Footer/Row"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="State" type="Label" parent="Footer/Row/StateBlock"]
+layout_mode = 2
+text = "READY"
+theme_override_font_sizes/font_size = 18
+
+[node name="Hint" type="Label" parent="Footer/Row/StateBlock"]
+layout_mode = 2
+text = "Begin your run"
+theme_override_colors/font_color = Color(0.62, 0.69, 0.74, 1)
+
+[node name="Dice" type="HBoxContainer" parent="Footer/Row"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="Die1" type="Label" parent="Footer/Row/Dice"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+text = "-"
 horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.98, 0.87, 0.5, 1)
+theme_override_font_sizes/font_size = 30
 
-[node name="Subtitle" type="Label" parent="CenterContainer/Content"]
+[node name="Die2" type="Label" parent="Footer/Row/Dice"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "Fixed Dungeon Board"
+text = "-"
 horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.98, 0.87, 0.5, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="Total" type="Label" parent="Footer/Row/Dice"]
+layout_mode = 2
+text = "TOTAL -"
+theme_override_font_sizes/font_size = 18
+
+[node name="Spacer" type="Control" parent="Footer/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Action" type="Button" parent="Footer/Row"]
+custom_minimum_size = Vector2(230, 64)
+layout_mode = 2
+text = "ROLL MOVEMENT"
+theme_override_font_sizes/font_size = 18
+
+[node name="Outcome" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -58.0
+offset_right = 310.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+text = "DUNGEON CLEARED"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 0.84, 0.3, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 46
+visible = false
