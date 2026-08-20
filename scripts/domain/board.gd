@@ -7,6 +7,16 @@ const WARRIOR_START := Vector2i(1, 6)
 const GOBLIN_START := Vector2i(10, 2)
 const CHEST_SPAWN := Vector2i(9, 6)
 const STATIC_OBSTACLES: Array[Vector2i] = []
+const VOID_TILES: Array[Vector2i] = [
+	Vector2i(0, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0),
+	Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1),
+	Vector2i(5, 2), Vector2i(6, 2),
+	Vector2i(0, 3), Vector2i(1, 3), Vector2i(5, 3), Vector2i(6, 3),
+	Vector2i(0, 4), Vector2i(1, 4), Vector2i(10, 4), Vector2i(11, 4),
+	Vector2i(0, 5), Vector2i(10, 5), Vector2i(11, 5),
+	Vector2i(0, 6),
+	Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(11, 7),
+]
 
 var _tiles: Dictionary = {}
 
@@ -14,6 +24,8 @@ func _init() -> void:
 	for y in ROWS:
 		for x in COLUMNS:
 			var coordinate := Vector2i(x, y)
+			if coordinate in VOID_TILES:
+				continue
 			var tile := Tile.new(coordinate)
 			tile.is_obstacle = coordinate in STATIC_OBSTACLES
 			_tiles[coordinate] = tile
@@ -22,7 +34,7 @@ func _init() -> void:
 	place_occupant(GOBLIN_START, &"goblin")
 
 func is_valid_coordinate(coordinate: Vector2i) -> bool:
-	return coordinate.x >= 0 and coordinate.x < COLUMNS and coordinate.y >= 0 and coordinate.y < ROWS
+	return _tiles.has(coordinate)
 
 func get_tile(coordinate: Vector2i) -> Tile:
 	return _tiles.get(coordinate)

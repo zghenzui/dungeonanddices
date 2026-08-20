@@ -10,6 +10,8 @@ const GOBLIN_COLOR := Color("d96565")
 const LEGAL_COLOR := Color("58c79b")
 const SELECTED_COLOR := Color("f5d76e")
 const SHADOW_COLOR := Color(0.0, 0.0, 0.0, 0.32)
+const LEVEL_FLOOR_TEXTURE: Texture2D = preload("res://assets/art/map/level-1-floor-texture.png")
+const LEVEL_CONCEPT_TEXTURE: Texture2D = preload("res://assets/art/map/level-1-winding-cavern.png")
 
 var board: Board
 var legal_destinations: Array[Vector2i] = []
@@ -59,6 +61,10 @@ func _draw() -> void:
 	var tile_size: float = geometry.tile_size
 	var board_size: Vector2 = geometry.board_size
 	var origin: Vector2 = geometry.origin
+	var texture_size: Vector2 = LEVEL_FLOOR_TEXTURE.get_size()
+	var source_tile_size := Vector2(texture_size.x / Board.COLUMNS, texture_size.y / Board.ROWS)
+	var concept_size: Vector2 = LEVEL_CONCEPT_TEXTURE.get_size()
+	var concept_tile_size := Vector2(concept_size.x / Board.COLUMNS, concept_size.y / Board.ROWS)
 	draw_rect(Rect2(origin, board_size), BOARD_BACKGROUND)
 
 	for y in Board.ROWS:
@@ -66,8 +72,14 @@ func _draw() -> void:
 			var coordinate: Vector2i = Vector2i(x, y)
 			var tile: Tile = board.get_tile(coordinate)
 			var cell: Rect2 = Rect2(origin + Vector2(x, y) * tile_size, Vector2(tile_size, tile_size))
-			var floor_color: Color = Color("1f2b35") if tile.is_obstacle else FLOOR_COLOR
-			draw_rect(cell, floor_color)
+			if tile == null:
+				continue
+			var source_cell := Rect2(Vector2(coordinate) * source_tile_size, source_tile_size)
+			draw_texture_rect_region(LEVEL_FLOOR_TEXTURE, cell, source_cell)
+			var concept_cell := Rect2(Vector2(coordinate) * concept_tile_size, concept_tile_size)
+			draw_texture_rect_region(LEVEL_CONCEPT_TEXTURE, cell, concept_cell, Color(1.0, 1.0, 1.0, 0.68))
+			var floor_tint := Color(0.08, 0.11, 0.14, 0.5) if tile.is_obstacle else Color(FLOOR_COLOR, 0.06)
+			draw_rect(cell, floor_tint)
 			if coordinate in legal_destinations:
 				draw_rect(cell.grow(-3.0), Color(LEGAL_COLOR, 0.22))
 				draw_rect(cell.grow(-4.0), LEGAL_COLOR, false, 2.0)

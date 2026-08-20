@@ -48,8 +48,10 @@ func _test_dice_and_combat() -> void:
 
 func _test_board() -> void:
 	var board := Board.new()
-	_check(board.is_valid_coordinate(Vector2i.ZERO), "Board origin valid")
+	_check(not board.is_valid_coordinate(Vector2i.ZERO), "Level 1 origin is a void tile")
+	_check(board.is_valid_coordinate(Vector2i(1, 0)), "Level 1 floor tile is valid")
 	_check(not board.is_valid_coordinate(Vector2i(12, 7)), "Board edge invalid")
+	_check(board.get_tile(Vector2i(5, 2)) == null, "Interior void has no tile")
 	_check(board.is_occupied(Board.WARRIOR_START), "Warrior occupies start")
 	_check(not board.can_occupy(Board.GOBLIN_START), "Occupied destination rejected")
 	_check(board.manhattan_distance(Vector2i(1, 1), Vector2i(4, 5)) == 7, "Manhattan distance")
