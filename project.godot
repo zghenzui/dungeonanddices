@@ -1,0 +1,20 @@
+; Engine configuration file.
+; Editing this file manually is not recommended.
+
+config_version=5
+
+
+[application]
+config/name="Dice Dungeon"
+run/main_scene="res://scenes/main_scene.tscn"
+
+
+[display]
+window/size/width=1280
+window/size/height=720
+window/stretch/mode="canvas_items"
+
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
